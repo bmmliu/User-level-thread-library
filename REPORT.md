@@ -52,7 +52,7 @@ PID on the ready queue. In this case, it's in the ready queue and thus active.
 Here, we block the current running thread and execute whatver next in the queue.
 As soon as the child finishes, the parent will be able to collect its return val.
 Another case is that the child is already is zombie state, we can collect the 
-return value directly.
+return value directly. 
 
 #### **Phase 3.1: preempt library** 
 Preempt allows us to use the resources fairly to all threads. In this phase, we 
