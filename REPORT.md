@@ -1,4 +1,4 @@
-## Project 1 REPORT
+## Project 2 REPORT
 In this program, we are asked to implement a basic user-level thread library
 with scheduling the thread by FIFO strategy. Since we implemented the program 
 based on the suggested phase given on the promopt, we would illustrate them 
