@@ -32,7 +32,7 @@ first thread and all the queues, another one to help us find if the tid exist
 in a queue.
 ###### **Phase 2.1.1 thread_create** 
 For thread_create, we simply make a new thread and initialize all its information
-and then enqueue it into the ready queue.
+and set up the context and then enqueue it into the ready queue.
 ###### **Phase 2.1.2 thread_yield** 
 For thread_yield, we first dequeue the ready queue and get the thread to be
 executed. Then, we make a copy of the current running thread and enqueue it in
@@ -41,8 +41,20 @@ that got dequeued in the ready queue and then do the context switch.
 ###### **Phase 2.1.3 thread_exit** 
 For thread_exit, we first assign the return value to the thread. And we create 
 a copy of the current running thread and put it into the zombie queue. What is
-tricky in this part is that if it has child, it has to unblock its child and put
-its child into ready queue. After taking care of the old running thread, we can 
+tricky here is that if it has parent, it has to unblock its parent and put
+its parent into ready queue. After taking care of the old running thread, we can 
 dequeue the ready state and get the next running thread and do the context switch.
+###### **Phase 2.1.4 thread_join** 
+There are two cases in this phase. The first case is that when a parent joins 
+its child, the child is still active. In this case, we have to block its parent
+for a while until its child dies. We determine if it's active by iterating its
+PID on the ready queue. In this case, it's in the ready queue and thus active.
+Here, we block the current running thread and execute whatver next in the queue.
+As soon as the child finishes, the parent will be able to collect its return val.
+Another case is that the child is already is zombie state, we can collect the 
+return value directly.
 
-
+#### **Phase 3.1: preempt library** 
+Preempt allows us to use the resources fairly to all threads. In this phase, we 
+use two data structure, one of type sigaction to help us deal with the signl,
+another of type itimeral to track the time.
