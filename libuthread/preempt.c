@@ -19,9 +19,8 @@
 struct sigaction signal_action;
 struct itimerval time_intrval;
 
-void signal_handler(int signal_num) {
+void signal_handler() {
   uthread_yield();
-
 }
 void preempt_disable(void) {
   sigprocmask(SIG_BLOCK, &signal_action.sa_mask, 0);
@@ -32,9 +31,9 @@ void preempt_enable(void) {
 }
 
 void preempt_start(void) {
-  time_intrval.it_interval.tv_usec = 10000;
+  time_intrval.it_interval.tv_usec = 100 * HZ;
   time_intrval.it_interval.tv_sec = 0;
-  time_intrval.it_value.tv_usec = 10000;
+  time_intrval.it_value.tv_usec = 100 * HZ;
   time_intrval.it_interval.tv_sec = 0;
   sigemptyset(&signal_action.sa_mask);
   sigaddset(&signal_action.sa_mask, SIGVTALRM);
