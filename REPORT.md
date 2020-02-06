@@ -57,4 +57,10 @@ return value directly.
 #### **Phase 3.1: preempt library** 
 Preempt allows us to use the resources fairly to all threads. In this phase, we 
 use two data structure, one of type sigaction to help us deal with the signl,
-another of type itimeral to track the time.
+another of type itimeral to track the time. We first call the sigemptyset to 
+clean the signal sent to it. Then we add SIGVTALRM to the sa_mask. Next, we 
+use sigprocmask to tell the signal that it can't be blocked since we start the 
+preemption. Also, the sa_handler here is basically just yield the function since
+that's what we want to do when we receive the signal. For preempt enable and 
+disable, we use the same function sigprocmask with different first argument to
+achieve the goal.
