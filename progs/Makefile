@@ -2,7 +2,9 @@
 #  **Add more lines to this variable in order to compile more programs**
 programs := \
 	uthread_hello.x \
-	uthread_yield.x
+	uthread_yield.x \
+	queue_tester.x \
+	test_preempt.x
 
 ## *** IMPORTANT *** ##
 ##	You should NOT have to modify anything below
