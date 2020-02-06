@@ -32,6 +32,7 @@ queue_t queue_create(void) {
   create_queue->Queuesize = 0;
   return create_queue;
 }
+
 /*Deallocation of memory*/
 int queue_destroy(queue_t queue) {
   if (queue == NULL) {
@@ -48,10 +49,12 @@ int queue_enqueue(queue_t queue, void *data) {
   if(queue == NULL || data == NULL) {
     return -1;
   }
+
   struct QueueNode* new = CreateNode(data);
   if(new == NULL){
     return -1;
   }
+
   /*If there's currently no node*/
   if(queue->Queuesize == 0) {
     queue->first = new;
@@ -70,6 +73,7 @@ int queue_dequeue(queue_t queue, void **data) {
   if(queue == NULL || queue->first == NULL || queue->Queuesize == 0) {
     return -1;
   }
+
   struct QueueNode* storetemp = queue->first;
   *data = storetemp->value;
 
@@ -82,8 +86,6 @@ int queue_dequeue(queue_t queue, void **data) {
     free(storetemp);
   }
 
-  /*Get rid of the first node*/
-
   queue->Queuesize--;
   return 0;
 }
@@ -94,6 +96,7 @@ int queue_delete(queue_t queue, void *data) {
   }
   struct QueueNode* tocompare = queue->first;
   struct QueueNode* previous = queue->first;
+
   /*If delete the first node in the queue*/
   if(tocompare->value == data) {
     queue->first = tocompare->next;
@@ -102,17 +105,20 @@ int queue_delete(queue_t queue, void *data) {
     free(tocompare);
     return 0;
   }
+
   tocompare = tocompare->next;
   while(tocompare->value != data && tocompare ->next != NULL) {
     tocompare = tocompare->next;
     previous = previous->next;
   }
+
   /*If can't find the data*/
   if(tocompare->value != data) {
     return -1;
   }
   previous->next = tocompare->next;
   queue->Queuesize--;
+
   /*Get rid of the node*/
   free(tocompare);
   return 0;
@@ -122,6 +128,7 @@ int queue_iterate(queue_t queue, queue_func_t func, void *arg, void **data) {
   if(queue == NULL || func == NULL) {
     return -1;
   }
+
   struct QueueNode* ProcessNode = queue->first;
   while(ProcessNode != NULL) {
     if (func(ProcessNode->value, arg)) {
