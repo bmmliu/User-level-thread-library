@@ -64,3 +64,12 @@ preemption. Also, the sa_handler here is basically just yield the function since
 that's what we want to do when we receive the signal. For preempt enable and 
 disable, we use the same function sigprocmask with different first argument to
 achieve the goal.
+
+#### **Phase 3.2: preempt tester**
+Based on the given uthread_yield test case, we add the preempt commonds the
+code. In the main function, we called the preempt_start() to start the preempt.
+And in each time we playing with a thread, we monitor it's running time and 
+stop it when it take to much resources. In order to test it that work, we add
+an infinite loop in the thread3, so the thread3 will not be completed and the
+print of thread3 will no longer appear comparing with the origional uthread_y
+ield test.
